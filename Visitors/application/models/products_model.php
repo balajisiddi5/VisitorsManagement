@@ -35,6 +35,29 @@ class Products_model extends CI_Model {
     * @param int $limit_end
     * @return array
     */
+    public function get_daterange($from, $to)
+    {
+        echo "calling model";
+        $this->db->select('products.id');
+        $this->db->select('products.name');
+        $this->db->select('products.age');
+        $this->db->select('products.phone');
+        $this->db->select('products.comingfrom');
+        $this->db->select('products.purpose');
+        $this->db->select('products.checkin');
+        $this->db->select('products.address');
+        $this->db->select('products.checkout');
+        $this->db->select('products.adhar');
+        $this->db->select('products.email');
+        $this->db->select('products.belongings');
+        $this->db->from('products');
+        $this->db->where('checkin >=', $from);
+        $this->db->where('checkin <=', $to);
+        
+        $query = $this->db->get();
+        
+        return $query->result_array(); 
+    }
     public function get_products($manufacture_id=null, $from=null, $to=null, $search_string=null, $order=null, $order_type='Asc', $limit_start, $limit_end)
     {
 	    
@@ -178,6 +201,11 @@ class Products_model extends CI_Model {
 	    
 	    
 	}
+	
+	    
+	    public function Add_User($data_user){
+	        $this->db->insert('user', $data_user);
+	    }
 }
 
 ?>	

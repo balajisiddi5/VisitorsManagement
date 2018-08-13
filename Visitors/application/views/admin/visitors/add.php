@@ -1,5 +1,4 @@
-   <html>
-   <body>
+    
     <div class="container top">
       
       <ul class="breadcrumb">
@@ -112,7 +111,7 @@
           <div class="control-group">
             <label for="inputError" class="control-label">CheckIn</label>
             <div class="controls">
-              <input type="text" id="" name="checkin" value="<?php  echo date('m-d-Y') ?>" readonly >
+              <input type="text" id="" name="checkin" value="<?php  echo date('Y-m-d') ?>" readonly >
               <!--<span class="help-inline">Woohoo!</span>-->
             </div>
           </div>
@@ -154,44 +153,10 @@
 	<?php  echo site_url();?> <br>
 	<?php echo base_url(); ?>assets/js/jquery.geocomplete.js
     </div>
-    <form>
-      <input id="geocomplete" type="text" placeholder="Type in an address" size="90" />
-	  <?php echo date(1);?>
-        </form>
-        <span>dkjdkjskj</span>
-    <link rel="stylesheet" href="<?php echo base_url();?>/assets/css/admin/mystyles.css">
-    
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type='text/javascript' src="<?php echo base_url();?>assets/js/jquery.geocomplete.js"></script>
-    <script type='text/javascript' src="<?php echo base_url();?>assets/js/logger.js"></script>
+              <span>dkjdkjskj</span>
+       
+     
     
     
-    <script>
-      $(function(){
-        
-        $("#geocomplete").geocomplete()
-          .bind("geocode:result", function(event, result){
-            $.log("Result: " + result.formatted_address);
-          })
-          .bind("geocode:error", function(event, status){
-            $.log("ERROR: " + status);
-          })
-          .bind("geocode:multiple", function(event, results){
-            $.log("Multiple: " + results.length + " results found");
-          });
-        
-        $("#find").click(function(){
-          $("#geocomplete").trigger("geocode");
-        });
-        
-        
-        $("#examples a").click(function(){
-          $("#geocomplete").val($(this).text()).trigger("geocode");
-          return false;
-        });
-        
-      });
-    </script>
-    </body>
-    </html>
+    
+    

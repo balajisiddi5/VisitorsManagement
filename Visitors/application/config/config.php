@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/projectphp/ghurkha';
+$config['base_url']	= 'http://localhost/VisitorsManagement/Visitors/';
 
 /*
 |--------------------------------------------------------------------------

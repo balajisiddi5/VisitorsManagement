@@ -133,9 +133,9 @@
             <button class="btn btn-primary" type="submit">Save changes</button>
             <button class="btn" type="reset">Cancel</button>
           </div>
-        </fieldset>
+               </fieldset>
 
       <?php echo form_close(); ?>
-
+		
     </div>
      

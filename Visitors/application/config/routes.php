@@ -57,6 +57,7 @@ $route['admin/products/update'] = 'admin_products/update';
 $route['admin/visitors/update/(:any)'] = 'admin_products/update/$1';
 $route['guard/visitors/update/(:any)'] = 'guard_products/checkout/$1';
 $route['admin/visitors/delete/(:any)'] = 'admin_products/delete/$1';
+$route['admin/visitors/export'] = 'admin_products/export';
 $route['admin/visitors/(:any)'] = 'admin_products/index/$1'; //$1 = page number
 $route['guard/visitors/(:any)'] = 'guard_products/index/$1'; //$1 = page number
 

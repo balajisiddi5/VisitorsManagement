@@ -1,16 +1,23 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Admin_products extends CI_Controller {
  
     /**
     * Responsable for auto load the model
     * @return void
     */
+    
     public function __construct()
     {
         parent::__construct();
         $this->load->model('products_model');
         $this->load->model('manufacturers_model');
-
+        //copied 
+//         $this->load->library('excel');//load PHPExcel library
+//         $this->load->model('upload_model');//To Upload file in a directory
+//         $this->load->model('excel_data_insert_model');
+        
         if(!$this->session->userdata('is_logged_in')){
             redirect('admin/login');
         }
@@ -66,16 +73,16 @@ class Admin_products extends CI_Controller {
             }
         }
         //make the data type var avaible to our view
-        $data['order_type_selected'] = $order_type;        
+         $data['order_type_selected'] = $order_type;        
 
-
+        
         //we must avoid a page reload with the previous session data
         //if any filter post was sent, then it's the first time we load the content
         //in this case we clean the session filter data
         //if any filter post was sent but we are in some page, we must load the session data
 
         //filtered && || paginated
-        if($manufacture_id !== false && $search_string !== false && $order !== false && $from !==false && $to!==false || $this->uri->segment(3) == true){ 
+        if($manufacture_id !== false && $search_string !== false && $order !== false || $this->uri->segment(3) == true){ 
            
             /*
             The comments here are the same for line 79 until 99
@@ -84,7 +91,7 @@ class Admin_products extends CI_Controller {
             if is null, we use the session data already stored
             we save order into the the var to load the view with the param already selected       
             */
-
+            echo "share entered";
             if($manufacture_id !== 0){
                 $filter_session_data['manufacture_selected'] = $manufacture_id;
             }else{
@@ -92,19 +99,7 @@ class Admin_products extends CI_Controller {
             }
             $data['manufacture_selected'] = $manufacture_id;
             
-            if($from !== 0){
-                $filter_session_data['fromdate_selected'] = $from;
-            }else{
-                $from = $this->session->userdata('fromdate_selected');
-            }
-            $data['fromdate_selected'] = $from;
-            
-            if($to !== 0){
-                $filter_session_data['todate_selected'] = $to;
-            }else{
-                $to = $this->session->userdata('todate_selected');
-            }
-            $data['todate_selected'] = $to;
+             
             
             if($search_string){
                 $filter_session_data['search_string_selected'] = $search_string;
@@ -131,15 +126,7 @@ class Admin_products extends CI_Controller {
             $config['total_rows'] = $data['count_products'];
 
             //fetch sql data into arrays
-            if($from && $to)
-            {
-                echo "coming to check date";
-                if($order){
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $from, $to, $search_string, $order, $order_type, $config['per_page'],$limit_end);
-                }else{
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $from, $to, $search_string, '', $order_type, $config['per_page'],$limit_end);
-                }
-            }
+            
             if($search_string){
                 if($order){
                     $data['products'] = $this->products_model->get_products($manufacture_id, $from, $to, $search_string, $order, $order_type, $config['per_page'],$limit_end);        
@@ -155,6 +142,8 @@ class Admin_products extends CI_Controller {
             }
 
         }else{
+            echo "coming to else block";
+           
 
             //clean filter data inside section
             $filter_session_data['manufacture_selected'] = null;
@@ -171,7 +160,16 @@ class Admin_products extends CI_Controller {
             //fetch sql data into arrays
             $data['manufactures'] = $this->manufacturers_model->get_manufacturers();
             $data['count_products']= $this->products_model->count_products();
-            $data['products'] = $this->products_model->get_products('', '', '','','', $order_type, $config['per_page'],$limit_end);        
+            $data['products'] = $this->products_model->get_products('', '', '','','', $order_type, $config['per_page'],$limit_end); 
+            /**
+             * for date range search
+             */
+            if($from !=null && $to !=NULL)
+            {
+               
+                $data['products'] = $this->products_model->get_daterange($from, $to);
+                
+            }
             $config['total_rows'] = $data['count_products'];
 
         }//!isset($manufacture_id) && !isset($search_string) && !isset($order)
@@ -290,7 +288,33 @@ class Admin_products extends CI_Controller {
         $this->load->view('includes/template', $data);            
 
     }//update
-
+    
+    /**
+     * expoer to excel file
+     */
+    public function export()
+    {
+        $this->load->library('excel');
+        $output=$this->input->post('exportable');
+        $this->excel->setActiveSheetIndex(0);
+        $this->excel->getActiveSheet()->setTitle('Exporing');
+        $filename='d1.xls';  
+        header('Content-Type: application/xls');
+        header('Content-Disposition: attachment;filename="'.$filename.'"');  
+        header('Cache-Control: max-age=0'); 
+        
+       
+//         echo "i am expoerting";
+//         header('Content-Type: application/xls');
+//         header('Content-Disposition: attachment; filename=download.xls');
+       
+       $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+       $objWriter->save('php://output');
+//        echo $output;
+         
+    }//expert
+    
+    
     /**
     * Delete product by his id
     * @return void
@@ -302,5 +326,64 @@ class Admin_products extends CI_Controller {
         $this->products_model->delete_product($id);
         redirect('admin/visitors');
     }//edit
+    
+    
+    
+   
+   
+        
+        public	function ExcelDataAdd()	{
+            //Path of files were you want to upload on localhost (C:/xampp/htdocs/ProjectName/uploads/excel/)
+            $configUpload['upload_path'] = FCPATH.'uploads/excel/';
+            $configUpload['allowed_types'] = 'xls|xlsx|csv';
+            $configUpload['max_size'] = '5000';
+            $this->load->library('upload', $configUpload);
+            $this->upload->do_upload('userfile');
+            $upload_data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.
+            $file_name = $upload_data['file_name']; //uploded file name
+            $extension=$upload_data['file_ext'];    // uploded file extension
+            
+            //$objReader =PHPExcel_IOFactory::createReader('Excel5');     //For excel 2003
+            $objReader= PHPExcel_IOFactory::createReader('Excel2007');	// For excel 2007
+            //Set to read only
+            $objReader->setReadDataOnly(true);
+            //Load excel file
+            $objPHPExcel=$objReader->load(FCPATH.'uploads/excel/'.$file_name);
+            $totalrows=$objPHPExcel->setActiveSheetIndex(0)->getHighestRow();   //Count Numbe of rows avalable in excel
+            $objWorksheet=$objPHPExcel->setActiveSheetIndex(0);
+            //loop from first data untill last data
+            for($i=2;$i<=$totalrows;$i++)
+            {
+                $id= $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
+                $name= $objWorksheet->getCellByColumnAndRow(1,$i)->getValue(); //Excel Column 1
+                $age= $objWorksheet->getCellByColumnAndRow(2,$i)->getValue(); //Excel Column 2
+                $email=$objWorksheet->getCellByColumnAndRow(3,$i)->getValue(); //Excel Column 3
+                $phone=$objWorksheet->getCellByColumnAndRow(4,$i)->getValue(); //Excel Column 4
+                $comingfrom= $objWorksheet->getCellByColumnAndRow(1,$i)->getValue(); //Excel Column 1
+                $purpose= $objWorksheet->getCellByColumnAndRow(2,$i)->getValue(); //Excel Column 2
+                $checkin=$objWorksheet->getCellByColumnAndRow(3,$i)->getValue(); //Excel Column 3
+                $address=$objWorksheet->getCellByColumnAndRow(4,$i)->getValue(); //Excel Column 4
+                $checkout= $objWorksheet->getCellByColumnAndRow(1,$i)->getValue(); //Excel Column 1
+                $adhar= $objWorksheet->getCellByColumnAndRow(2,$i)->getValue(); //Excel Column 2
+                $email=$objWorksheet->getCellByColumnAndRow(3,$i)->getValue(); //Excel Column 3
+                $belongings=$objWorksheet->getCellByColumnAndRow(4,$i)->getValue(); //Excel Column 4
+                
+                $id= $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
+                $name= $objWorksheet->getCellByColumnAndRow(1,$i)->getValue(); //Excel Column 1
+                $age= $objWorksheet->getCellByColumnAndRow(2,$i)->getValue(); //Excel Column 2
+                $emaile=$objWorksheet->getCellByColumnAndRow(3,$i)->getValue(); //Excel Column 3
+                $phone=$objWorksheet->getCellByColumnAndRow(4,$i)->getValue();
+                $data_user=array('name'=>$name, 'age'=>$age ,'email'=>$email ,'phone'=>$phone , 'comingfrom'=>$comingfrom,'purpose'=>$purpose ,
+                    'checkin'=>$checkin , 'address'=>$address,'checkout'=>$checkout,'adhar'=>$adhar ,'email'=>$email , 'belongings'=>$belongings);
+                $this->products_model->Add_User($data_user);
+                
+                
+            }
+            unlink('././uploads/excel/'.$file_name); //File Deleted After uploading in database .
+            redirect(base_url() . "put link were you want to redirect");
+            
+            
+        }
+        
 
 }

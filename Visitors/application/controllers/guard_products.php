@@ -20,11 +20,15 @@ class Guard_products extends CI_Controller {
      * Load the main view with all the current model model's data.
      * @return void
      */
+    
     public function index()
     {
+       
         echo "welcome guard";
         //all the posts sent by the view
         $manufacture_id = $this->input->post('manufacture_id');
+        $from = $this->input->post('manufacture_id');
+        $to = $this->input->post('manufacture_id');
         $search_string = $this->input->post('search_string');
         $order = $this->input->post('order');
         $order_type = $this->input->post('order_type');
@@ -117,9 +121,9 @@ class Guard_products extends CI_Controller {
             //fetch sql data into arrays
             if($search_string){
                 if($order){
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $search_string, $order, $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->products_model->get_products($manufacture_id,  $from, $to, $search_string, $order, $order_type, $config['per_page'],$limit_end);
                 }else{
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $search_string, '', $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->products_model->get_products($manufacture_id,  $from, $to, $search_string, '', $order_type, $config['per_page'],$limit_end);
                 }
             }else{
                 if($order){
