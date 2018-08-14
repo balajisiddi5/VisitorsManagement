@@ -44,19 +44,19 @@
             echo form_input('search_string', $search_string_selected, 'style="width: 170px;
 height: 26px;"');
 
-            echo form_label('From', 'datefrom');
+            echo form_label('From:', 'datefrom');
             ?>
               <input type="date" class="form-control" id="fromdate"
 					name="datefrom">
               <?php
 
-            echo form_label('To', 'dateto');
+            echo form_label('To:', 'dateto');
             ?>
               <input type="date" class="form-control" id="dateto"
-					name="dateto">
+					name="dateto"><br><br>
               <?php
 
-            echo form_label('Order by:', 'order');
+            echo form_label('Order by:', 'Order');
             echo form_dropdown('order', $options_products, $order, 'class="span2"');
 
             $data_submit = array(
@@ -82,16 +82,16 @@ height: 26px;"');
 				<thead>
 					<tr>
 						<th class="header">#</th>
-						<th class="yellow header headerSortDown">name</th>
-						<th class="green header">age</th>
-						<th class="red header">phone</th>
-						<th class="red header">comingfrom</th>
-						<th class="red header">purpose</th>
-						<th class="red header">checkin</th>
-						<th class="green header">address</th>
-						<th class="red header">checkout</th>
-						<th class="red header">adhar</th>
-						<th class="red header">email</th>
+						<th class="yellow header headerSortDown">Name</th>
+						<th class="green header">Age</th>
+						<th class="red header">Phone</th>
+						<th class="red header">Comingfrom</th>
+						<th class="red header">Purpose</th>
+						<th class="red header">Checkin</th>
+						<th class="green header">Address</th>
+						<th class="red header">Checkout</th>
+						<th class="red header">Adhar</th>
+						<th class="red header">Email</th>
 						<th class="red header">Belonging</th>
 						<th class="red header">Update</th>
 					</tr>

@@ -3363,3 +3363,20 @@ a.thumbnail:hover {
 .invisible {
   visibility: hidden;
 }
+#dateto{	height:26px;
+}
+
+#fromdate{
+	height:26px;	
+}
+
+div.welmsg{
+	float:right;
+	color:#c42821;
+	 margin-top: 10px;
+	   opacity: 1;
+	   font-size:22px;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25)
+	 
+}
+

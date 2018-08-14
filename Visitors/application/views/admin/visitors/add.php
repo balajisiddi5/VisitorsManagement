@@ -138,22 +138,21 @@
           </div>
           <div class="control-group">
           
-            <label for="inputError" class="control-label">belongings</label>
+            <label for="inputError" class="control-label">Belongings</label>
          <?php  echo form_dropdown('belong_name', $options_belongings, 'class="span2"');?>
           </div>
           
           <div class="form-actions">
             <button class="btn btn-primary" type="submit">Save changes</button>
-            <button class="btn" type="reset">Cancel</button>
+            <button class="btn" type="reset">Reset</button>
           </div>
           </form>
         </fieldset>
 
       <?php echo form_close(); ?>
-	<?php  echo site_url();?> <br>
-	<?php echo base_url(); ?>assets/js/jquery.geocomplete.js
+	
     </div>
-              <span>dkjdkjskj</span>
+    
        
      
     

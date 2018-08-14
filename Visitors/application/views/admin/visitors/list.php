@@ -47,11 +47,22 @@
               echo form_input('search_string', $search_string_selected, 'style="width: 170px;
 height: 26px;"');
 
-              echo form_label('Filter by date:', 'manufacture_id');
-              echo form_dropdown('manufacture_id', $options_manufacture, $manufacture_selected, 'class="span2"');
+//               echo form_label('Filter by date:', 'manufacture_id');
+//               echo form_dropdown('manufacture_id', $options_manufacture, $manufacture_selected, 'class="span2"');
+              echo form_label('From:', 'datefrom');
+              ?>
+              <input type="date" class="form-control" id="fromdate"
+					name="datefrom">
+              <?php
 
-              echo form_label('Order by:', 'order');
-              echo form_dropdown('order', $options_products, $order, 'class="span2"');
+            echo form_label('To:', 'dateto');
+            ?>
+              <input type="date" class="form-control" id="dateto"
+					name="dateto"><br><br>
+             <?php
+
+              echo form_label('Orderby:', 'order');
+              echo form_dropdown('order', $options_products, $order,'style="width: 170px;','class="span2"','id="dropid"');
 
               $data_submit = array('name' => 'mysubmit', 'class' => 'btn btn-primary', 'value' => 'Go');
 
@@ -110,7 +121,7 @@ height: 26px;"');
               ?>      
             </tbody>
           </table>
-<h1><?php echo  $this->uri->segment(1);?></h1>
+
           <?php echo '<div class="pagination">'.$this->pagination->create_links().'</div>'; ?>
 
       </div>
