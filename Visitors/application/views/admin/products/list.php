@@ -192,7 +192,7 @@ height: 26px;"');
 <label>Excel File:</label>                        
 <input type="file" name="userfile" />				                   
 <input type="submit" value="upload" name="upload" />
-</form>	
+
 </div>
                
 		</div>

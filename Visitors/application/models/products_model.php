@@ -58,7 +58,7 @@ class Products_model extends CI_Model {
         
         return $query->result_array(); 
     }
-    public function get_products($manufacture_id=null, $from=null, $to=null, $search_string=null, $order=null, $order_type='Asc', $limit_start, $limit_end)
+    public function get_products($manufacture_id=null, $search_string=null, $order=null, $order_type='Asc', $limit_start, $limit_end)
     {
 	    
 		$this->db->select('products.id');
@@ -83,14 +83,7 @@ class Products_model extends CI_Model {
 			$this->db->like('name', $search_string);
 		}
 		
-		if($from && $to)
-		{
-		    echo "coming" ;
-		    $this->db->like('checkin >=', $from);
-		    $this->db->like('checkin <=', $to);
-		}
-
-		
+				
 		$this->db->group_by('products.id');
 
 		if($order){

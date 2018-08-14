@@ -8,7 +8,7 @@ class Guard_products extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('products_model');
+        $this->load->model('visitors_model');
         $this->load->model('manufacturers_model');
         
         if(!$this->session->userdata('is_logged_in')){
@@ -115,26 +115,26 @@ class Guard_products extends CI_Controller {
             //fetch manufacturers data into arrays
             $data['manufactures'] = $this->manufacturers_model->get_manufacturers();
             
-            $data['count_products']= $this->products_model->count_products($manufacture_id, $search_string, $order);
+            $data['count_products']= $this->visitors_model->count_products($manufacture_id, $search_string, $order);
             $config['total_rows'] = $data['count_products'];
             
             //fetch sql data into arrays
             if($search_string){
                 if($order){
-                    $data['products'] = $this->products_model->get_products($manufacture_id,  $from, $to, $search_string, $order, $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id,  $search_string, $order, $order_type, $config['per_page'],$limit_end);
                 }else{
-                    $data['products'] = $this->products_model->get_products($manufacture_id,  $from, $to, $search_string, '', $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id,   $search_string, '', $order_type, $config['per_page'],$limit_end);
                 }
             }else{
                 if($order){
-                    $data['products'] = $this->products_model->get_products($manufacture_id, '', $order, $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id, '', $order, $order_type, $config['per_page'],$limit_end);
                 }else{
-                    $data['products'] = $this->products_model->get_products($manufacture_id, '', '','','', $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id, '', '',  $order_type, $config['per_page'],$limit_end);
                 }
             }
             
         }else{
-            
+            echo "i am else block";
             //clean filter data inside section
             $filter_session_data['manufacture_selected'] = null;
             $filter_session_data['search_string_selected'] = null;
@@ -149,8 +149,8 @@ class Guard_products extends CI_Controller {
             
             //fetch sql data into arrays
             $data['manufactures'] = $this->manufacturers_model->get_manufacturers();
-            $data['count_products']= $this->products_model->count_products();
-            $data['products'] = $this->products_model->get_products('', '', '','','', $order_type, $config['per_page'],$limit_end);
+            $data['count_products']= $this->visitors_model->count_products();
+            $data['products'] = $this->visitors_model->get_products('', '', '', $order_type, $config['per_page'],$limit_end);
             $config['total_rows'] = $data['count_products'];
             
         }//!isset($manufacture_id) && !isset($search_string) && !isset($order)
@@ -194,7 +194,7 @@ class Guard_products extends CI_Controller {
                     'belongings' => $this->input->post('belong_name')
                 );
                 //if the insert has returned true then we show the flash message
-                if($this->products_model->store_product($data_to_store)){
+                if($this->visitors_model->store_product($data_to_store)){
                     $data['flash_message'] = TRUE;
                 }else{
                     $data['flash_message'] = FALSE;
@@ -246,7 +246,7 @@ class Guard_products extends CI_Controller {
                     'belongings' => $this->input->post('belongings')
                 );
                 //if the insert has returned true then we show the flash message
-                if($this->products_model->update_product($id, $data_to_store) == TRUE){
+                if($this->visitors_model->update_product($id, $data_to_store) == TRUE){
                     $this->session->set_flashdata('flash_message', 'updated');
                 }else{
                     $this->session->set_flashdata('flash_message', 'not_updated');
@@ -261,7 +261,7 @@ class Guard_products extends CI_Controller {
         //the code below wel reload the current data
         
         //product data
-        $data['product'] = $this->products_model->get_product_by_id($id);
+        $data['product'] = $this->visitors_model->get_product_by_id($id);
         //fetch manufactures data to populate the select field
         $data['manufactures'] = $this->manufacturers_model->get_manufacturers();
         //load the view
@@ -271,7 +271,7 @@ class Guard_products extends CI_Controller {
     }//update
     
     public function add_belongings(){
-        $data['$belonings_rec']=  $this->product_model->get_belongings();
+        $data['$belonings_rec']=  $this->visitors_model->get_belongings();
         $data['main_content'] = 'admin/visitors/add';
         $this->load->view('includes/template', $data);
        
@@ -285,7 +285,7 @@ class Guard_products extends CI_Controller {
     {
         //product id
         $id = $this->uri->segment(4);
-        $this->products_model->delete_product($id);
+        $this->visitors_model->delete_product($id);
         redirect('admin/products');
     }//edit
     public function checkout()
@@ -294,7 +294,7 @@ class Guard_products extends CI_Controller {
         $checkout_date = array(
             'checkout' => date('Y-m-d H:i:s')
         );
-        $this->products_model->checkout_visitor($id, $checkout_date);
+        $this->visitors_model->checkout_visitor($id, $checkout_date);
         redirect('guard/visitors');
     }
     
