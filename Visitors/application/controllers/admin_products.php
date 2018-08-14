@@ -32,7 +32,8 @@ class Admin_products extends CI_Controller {
 
         //all the posts sent by the view
         $manufacture_id = $this->input->post('manufacture_id');        
-        $search_string = $this->input->post('search_string');        
+        $search_string = $this->input->post('search_string');   
+        echo $search_string;
         $order = $this->input->post('order'); 
         $order_type = $this->input->post('order_type'); 
         $from=$this->input->post('datefrom');
@@ -129,15 +130,15 @@ class Admin_products extends CI_Controller {
             
             if($search_string){
                 if($order){
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $from, $to, $search_string, $order, $order_type, $config['per_page'],$limit_end);        
+                    $data['products'] = $this->products_model->get_products($manufacture_id, $search_string, $order, $order_type, $config['per_page'],$limit_end);        
                 }else{
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $from, $to, $search_string, '', $order_type, $config['per_page'],$limit_end);           
+                    $data['products'] = $this->products_model->get_products($manufacture_id, $search_string, '', $order_type, $config['per_page'],$limit_end);           
                 }
             }else{
                 if($order){
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $from, $to, '', $order, $order_type, $config['per_page'],$limit_end);        
+                    $data['products'] = $this->products_model->get_products($manufacture_id, '', $order, $order_type, $config['per_page'],$limit_end);        
                 }else{
-                    $data['products'] = $this->products_model->get_products($manufacture_id, $from, $to, '', '', $order_type, $config['per_page'],$limit_end);        
+                    $data['products'] = $this->products_model->get_products($manufacture_id, '', '', $order_type, $config['per_page'],$limit_end);        
                 }
             }
 
@@ -160,7 +161,7 @@ class Admin_products extends CI_Controller {
             //fetch sql data into arrays
             $data['manufactures'] = $this->manufacturers_model->get_manufacturers();
             $data['count_products']= $this->products_model->count_products();
-            $data['products'] = $this->products_model->get_products('', '', '','','', $order_type, $config['per_page'],$limit_end); 
+            $data['products'] = $this->products_model->get_products('', '', '', $order_type, $config['per_page'],$limit_end); 
             /**
              * for date range search
              */
