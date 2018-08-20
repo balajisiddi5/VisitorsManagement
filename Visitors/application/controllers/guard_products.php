@@ -23,15 +23,14 @@ class Guard_products extends CI_Controller {
     
     public function index()
     {
-       
-        echo "welcome guard";
-        //all the posts sent by the view
+       //all the posts sent by the view
         $manufacture_id = $this->input->post('manufacture_id');
-        $from = $this->input->post('manufacture_id');
-        $to = $this->input->post('manufacture_id');
         $search_string = $this->input->post('search_string');
         $order = $this->input->post('order');
         $order_type = $this->input->post('order_type');
+        $from=$this->input->post('datefrom');
+        $to=$this->input->post('dateto');
+        
         
         //pagination settings
         $config['per_page'] = 5;
@@ -77,8 +76,9 @@ class Guard_products extends CI_Controller {
         //if any filter post was sent but we are in some page, we must load the session data
         
         //filtered && || paginated
-        if($manufacture_id !== false && $search_string !== false && $order !== false || $this->uri->segment(3) == true){
-            
+        if($search_string !== false && $from !== false && $to !==false && $order !== false || $this->uri->segment(3) == true){
+            echo "i am in if";
+             
             /*
              The comments here are the same for line 79 until 99
              
@@ -93,6 +93,7 @@ class Guard_products extends CI_Controller {
                 $manufacture_id = $this->session->userdata('manufacture_selected');
             }
             $data['manufacture_selected'] = $manufacture_id;
+            
             
             if($search_string){
                 $filter_session_data['search_string_selected'] = $search_string;
@@ -119,22 +120,23 @@ class Guard_products extends CI_Controller {
             $config['total_rows'] = $data['count_products'];
             
             //fetch sql data into arrays
-            if($search_string){
+            if($search_string || ($from && $to)){
                 if($order){
-                    $data['products'] = $this->visitors_model->get_products($manufacture_id,  $search_string, $order, $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id, $from, $to, $search_string, $order, $order_type, $config['per_page'],$limit_end);
                 }else{
-                    $data['products'] = $this->visitors_model->get_products($manufacture_id,   $search_string, '', $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id, $from, $to,  $search_string, '', $order_type, $config['per_page'],$limit_end);
                 }
             }else{
                 if($order){
-                    $data['products'] = $this->visitors_model->get_products($manufacture_id, '', $order, $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id, '', '', '', $order, $order_type, $config['per_page'],$limit_end);
                 }else{
-                    $data['products'] = $this->visitors_model->get_products($manufacture_id, '', '',  $order_type, $config['per_page'],$limit_end);
+                    $data['products'] = $this->visitors_model->get_products($manufacture_id, '', '', '', '',  $order_type, $config['per_page'],$limit_end);
                 }
             }
+           
             
         }else{
-            echo "i am else block";
+           
             //clean filter data inside section
             $filter_session_data['manufacture_selected'] = null;
             $filter_session_data['search_string_selected'] = null;
@@ -150,7 +152,8 @@ class Guard_products extends CI_Controller {
             //fetch sql data into arrays
             $data['manufactures'] = $this->manufacturers_model->get_manufacturers();
             $data['count_products']= $this->visitors_model->count_products();
-            $data['products'] = $this->visitors_model->get_products('', '', '', $order_type, $config['per_page'],$limit_end);
+            $data['products'] = $this->visitors_model->get_products('', '', '', '', '', $order_type, $config['per_page'],$limit_end);
+           
             $config['total_rows'] = $data['count_products'];
             
         }//!isset($manufacture_id) && !isset($search_string) && !isset($order)
@@ -175,6 +178,11 @@ class Guard_products extends CI_Controller {
             $this->form_validation->set_rules('age', 'age', 'required');
             $this->form_validation->set_rules('phone', 'phone', 'required');
             $this->form_validation->set_rules('comingfrom', 'comingfrom', 'required');
+            $this->form_validation->set_rules('purpose', 'purpose', 'required');
+            $this->form_validation->set_rules('checkin', 'checkin', 'required');
+            $this->form_validation->set_rules('address', 'address', 'required');
+            $this->form_validation->set_rules('adhar', 'adhar', 'required');
+            $this->form_validation->set_rules('email', 'email', 'required');
             
             $this->form_validation->set_error_delimiters('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>', '</strong></div>');
             
@@ -191,7 +199,8 @@ class Guard_products extends CI_Controller {
                     'address' => $this->input->post('address'),
                     'adhar' => $this->input->post('adhar'),
                     'email' => $this->input->post('email'),
-                    'belongings' => $this->input->post('belong_name')
+                    'belongings' => $this->input->post('belong_name'),
+                    'enteredby' => $this->input->post('enteredby')
                 );
                 //if the insert has returned true then we show the flash message
                 if($this->visitors_model->store_product($data_to_store)){

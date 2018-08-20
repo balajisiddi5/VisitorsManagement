@@ -34,6 +34,7 @@ class Admin_products extends CI_Controller {
         $manufacture_id = $this->input->post('manufacture_id');        
         $search_string = $this->input->post('search_string');   
         echo $search_string;
+        echo $manufacture_id;
         $order = $this->input->post('order'); 
         $order_type = $this->input->post('order_type'); 
         $from=$this->input->post('datefrom');
@@ -70,7 +71,7 @@ class Admin_products extends CI_Controller {
                 $order_type = $this->session->userdata('order_type');    
             }else{
                 //if we have nothing inside session, so it's the default "Asc"
-                $order_type = 'Asc';    
+                $order_type = 'DESC';    
             }
         }
         //make the data type var avaible to our view
@@ -83,7 +84,7 @@ class Admin_products extends CI_Controller {
         //if any filter post was sent but we are in some page, we must load the session data
 
         //filtered && || paginated
-        if($manufacture_id !== false && $search_string !== false && $order !== false || $this->uri->segment(3) == true){ 
+        if($search_string !== false && $order !== false || $this->uri->segment(3) == true){ 
            
             /*
             The comments here are the same for line 79 until 99

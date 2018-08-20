@@ -132,6 +132,7 @@
           <div class="form-actions">
             <button class="btn btn-primary" type="submit">Save changes</button>
             <button class="btn" type="reset">Cancel</button>
+            <h2>Entered by <?php echo ucfirst($product[0]['enteredby'])?></h2>
           </div>
                </fieldset>
 

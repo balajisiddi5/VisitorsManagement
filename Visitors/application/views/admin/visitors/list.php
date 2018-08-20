@@ -52,7 +52,7 @@ height: 26px;"');
               echo form_label('From:', 'datefrom');
               ?>
               <input type="date" class="form-control" id="fromdate"
-					name="datefrom">
+					name="datefrom" value="<?php $from_date;?>">
               <?php
 
             echo form_label('To:', 'dateto');

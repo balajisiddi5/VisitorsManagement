@@ -68,71 +68,72 @@
 
       //form validation
       echo validation_errors();
-      
+      date_default_timezone_set('Asia/Kolkata');
       echo form_open('guard/visitors/add', $attributes);
+      
       ?>
         <fieldset>
         <form>
           <div class="control-group">
             <label for="inputError" class="control-label">Name</label>
             <div class="controls">
-              <input type="text" id="" name="name" value="<?php echo set_value('description'); ?>" >
+              <input type="text" id="" name="name" value="<?php echo set_value('name'); ?>" >
               <!--<span class="help-inline">Woohoo!</span>-->
             </div>
           </div>
           <div class="control-group">
             <label for="inputError" class="control-label">Age</label>
             <div class="controls">
-              <input type="text" id="" name="age" value="<?php echo set_value('stock'); ?>">
+              <input type="text" id="" name="age" value="<?php echo set_value('age'); ?>">
               <!--<span class="help-inline">Cost Price</span>-->
             </div>
           </div>          
           <div class="control-group">
             <label for="inputError" class="control-label">Phone</label>
             <div class="controls">
-              <input type="text" id="" name="phone" value="<?php echo set_value('cost_price'); ?>">
+              <input type="text" id="" name="phone" value="<?php echo set_value('phone'); ?>">
               <!--<span class="help-inline">Cost Price</span>-->
             </div>
           </div>
           <div class="control-group">
             <label for="inputError" class="control-label">Coming from</label>
             <div class="controls">
-              <input type="text" id="geocomplete" name="comingfrom" value="<?php echo set_value('sell_price'); ?>" size="90"/>
+              <input type="text" id="geocomplete" name="comingfrom" value="<?php echo set_value('comingfrom'); ?>" size="90"/>
               <!--<span class="help-inline">OOps</span>-->
             </div>
           </div>
           <div class="control-group">
             <label for="inputError" class="control-label">Purpose</label>
             <div class="controls">
-              <input type="text" id="geocomplete" name="purpose" value="<?php echo set_value('description'); ?>" >
+              <input type="text" id="geocomplete" name="purpose" value="<?php echo set_value('purpose'); ?>" >
               <!--<span class="help-inline">Woohoo!</span>-->
             </div>
           </div>
           <div class="control-group">
             <label for="inputError" class="control-label">CheckIn</label>
             <div class="controls">
-              <input type="text" id="" name="checkin" value="<?php  echo date('Y-m-d') ?>" readonly >
+              <input type="text" id="" name="checkin" value="<?php  echo date('Y-m-d H:i:s') ?>" readonly >
               <!--<span class="help-inline">Woohoo!</span>-->
             </div>
           </div>
           <div class="control-group">
             <label for="inputError" class="control-label">Address</label>
             <div class="controls">
-              <input type="text" id="" name="address" value="<?php echo set_value('description'); ?>" >
+              <input type="text" id="" name="address" value="<?php echo set_value('address'); ?>" >
               <!--<span class="help-inline">Woohoo!</span>-->
             </div>
           </div>
           <div class="control-group">
             <label for="inputError" class="control-label">Adhar</label>
             <div class="controls">
-              <input type="text" id="" name="adhar" value="<?php echo set_value('description'); ?>" >
+              <input type="text" id="" name="adhar" value="<?php echo set_value('adhar'); ?>" >
               <!--<span class="help-inline">Woohoo!</span>-->
             </div>
           </div>
           <div class="control-group">
             <label for="inputError" class="control-label">Email</label>
             <div class="controls">
-              <input type="text" id="" name="email" value="<?php echo set_value('description'); ?>" >
+              <input type="text" id="" name="email" value="<?php echo set_value('email'); ?>" >
               <!--<span class="help-inline">Woohoo!</span>-->
             </div>
           </div>
@@ -141,7 +142,12 @@
             <label for="inputError" class="control-label">Belongings</label>
          <?php  echo form_dropdown('belong_name', $options_belongings, 'class="span2"');?>
           </div>
-          
+          <div class="control-group">
+              <div class="controls">
+              <input type="hidden" id="" name="enteredby" value="<?php echo $this->session->userdata('user_name'); ?>" >
+              <!--<span class="help-inline">Woohoo!</span>-->
+            </div>
+          </div>
           <div class="form-actions">
             <button class="btn btn-primary" type="submit">Save changes</button>
             <button class="btn" type="reset">Reset</button>

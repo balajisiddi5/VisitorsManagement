@@ -37,7 +37,7 @@ class visitors_model extends CI_Model {
      */
     public function get_daterange($from, $to)
     {
-        echo "calling model";
+        echo "calling vmodel";
         $this->db->select('products.id');
         $this->db->select('products.name');
         $this->db->select('products.age');
@@ -51,15 +51,21 @@ class visitors_model extends CI_Model {
         $this->db->select('products.email');
         $this->db->select('products.belongings');
         $this->db->from('products');
+        
+        
         $this->db->where('checkin >=', $from);
         $this->db->where('checkin <=', $to);
-        
+       
         $query = $this->db->get();
+        
         
         return $query->result_array();
     }
-    public function get_products($manufacture_id=null, $search_string=null, $order=null, $order_type='Asc', $limit_start, $limit_end)
+    public function get_products($manufacture_id=null, $from=null, $to=null, $search_string=null, $order=null, $order_type='Asc', $limit_start, $limit_end)
     {
+        echo "get products ok";
+        echo $from;
+        echo $to;
         
         $this->db->select('products.id');
         $this->db->select('products.name');
@@ -80,10 +86,17 @@ class visitors_model extends CI_Model {
             $this->db->where('manufacture_id', $manufacture_id);
         }
         if($search_string){
-            $this->db->like('comingfrom', $search_string);
+            $this->db->like('name', $search_string);
         }
         
+        if($from && $to)
+        {
+            $this->db->where('checkin >=', $from);
+            $this->db->where('checkin <=', $to);
+            
+        }
         
+       
         $this->db->group_by('products.id');
         
         if($order){
@@ -117,7 +130,7 @@ class visitors_model extends CI_Model {
             $this->db->where('manufacture_id', $manufacture_id);
         }
         if($search_string){
-            $this->db->like('comingfrom', $search_string);
+            $this->db->like('name', $search_string);
         }
         if($order){
             $this->db->order_by($order, 'Asc');

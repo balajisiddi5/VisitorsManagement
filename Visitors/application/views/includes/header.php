@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html lang="en-US">
 <head>
-  <title>CodeIgniter Admin Sample Project</title>
+  <title>VisitorManagement</title>
   <meta charset="utf-8">
   <link href="<?php echo base_url(); ?>assets/css/admin/global.css" rel="stylesheet" type="text/css">
 </head>
@@ -12,10 +12,10 @@
 	      <a class="brand"></a>
 	      <div class =welmsg>
 	      <?php if($this->uri->segment(1) == 'admin'){
-	       echo"welcome admin";
+	          echo $this->session->userdata('user_name');
 	       }?>
 	        <?php if($this->uri->segment(1) == 'guard'){
-	       echo"welcome guard";
+	            echo $this->session->userdata('user_name');
 	       }?>
 	       </div>
 	       

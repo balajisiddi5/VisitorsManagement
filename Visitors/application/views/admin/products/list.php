@@ -1,4 +1,5 @@
-
+<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/admin/mystyles.css">
+	
 <div class="container top">
 
 	<ul class="breadcrumb">
@@ -7,6 +8,18 @@
           </a> <span class="divider">/</span></li>
 		<li class="active">
           <?php echo ucfirst($this->uri->segment(2));?>
+        </li>
+        <li>
+        <?php $attributesex = array(
+                'class' => 'form-inline reset-margin',
+                'id' => 'myformex'
+            );
+            echo form_open('admin/visitors/export', $attributesex);?>
+            <input type="hidden" name="exportable" id="id"
+				value='<?php echo $output ?>'>
+				 <input type="submit"
+				value="Export  Excel" class="btn btn-info" id="exportbtn">
+				<?php echo form_close();?>
         </li>
 	</ul>
 
@@ -47,13 +60,13 @@ height: 26px;"');
             echo form_label('From:', 'datefrom');
             ?>
               <input type="date" class="form-control" id="fromdate"
-					name="datefrom">
+					name="datefrom" value="<?php echo $search_string_selected ?>">
               <?php
 
             echo form_label('To:', 'dateto');
             ?>
               <input type="date" class="form-control" id="dateto"
-					name="dateto"><br><br>
+					name="dateto" value="<?php echo set_value('dateto'); ?>"><br><br>
               <?php
 
             echo form_label('Order by:', 'Order');
@@ -173,27 +186,22 @@ height: 26px;"');
         $output.='<span>l</span>';
         $output .= '</table>';
  
-            $attributesex = array(
-                'class' => 'form-inline reset-margin',
-                'id' => 'myformex'
-            );
-            echo form_open('admin/visitors/export', $attributesex);
+            
             ?>
               
-<input type="hidden" name="exportable" id="id"
-				value='<?php echo $output ?>'>
-				 <input type="submit"
-				value="Export  Excel" class="btn btn-info">
-<?php echo form_close();?>
 
 
-<div>									
+
+
+<!-- <div>									 -->
 <?php echo form_open_multipart('exceldatainsert/ExcelDataAdd');?>                      
-<label>Excel File:</label>                        
-<input type="file" name="userfile" />				                   
-<input type="submit" value="upload" name="upload" />
+<!-- <label>Excel File:</label>                         -->
+<!-- <input type="file" name="userfile" />				                    -->
+<!-- <input type="submit" value="upload" name="upload" /> -->
 
-</div>
+<!-- </div> -->
                
 		</div>
 	</div>
+	</div>
+	
